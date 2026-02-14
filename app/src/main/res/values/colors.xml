@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sage_bg">#558B2F</color>
+    <color name="sage_accent">#7CB342</color>
+    <color name="text_light">#FFFFFF</color>
+    <color name="text_hint">#B3FFFFFF</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
