@@ -9,17 +9,6 @@
     android:padding="24dp"
     tools:context=".MainActivity">
 
-    <ImageButton
-        android:id="@+id/btnMode"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/mode_desc"
-        android:src="@android:drawable/ic_popup_sync"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/text_light" />
-
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
@@ -31,39 +20,9 @@
         android:progressDrawable="@drawable/circular_progress_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintWidth_percent="0.95" />
-
-    <TextView
-        android:id="@+id/tvInstruction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:text="@string/default_instruction"
-        android:textColor="@color/text_light"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/tvTechnique"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif-medium"
-        android:letterSpacing="0.1"
-        android:text="@string/technique_standard"
-        android:textAllCaps="true"
-        android:textColor="@color/text_hint"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvInstruction"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintWidth_percent="0.45" />
 
     <TextView
         android:id="@+id/tvTimer"
@@ -72,17 +31,56 @@
         android:fontFamily="sans-serif-light"
         android:text="@string/default_timer"
         android:textColor="@color/text_light"
-        android:textSize="64sp"
+        android:textSize="56sp"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="@+id/progressBar"
         app:layout_constraintStart_toStartOf="@+id/progressBar"
         app:layout_constraintTop_toTopOf="@+id/progressBar" />
 
+    <TextView
+        android:id="@+id/tvInstruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_instruction"
+        android:textColor="@color/text_light"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvTimer"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar" />
+
+    <ImageButton
+        android:id="@+id/btnMode"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/mode_desc"
+        android:src="@android:drawable/ic_popup_sync"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/text_light" />
+
+    <TextView
+        android:id="@+id/tvTechnique"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.1"
+        android:text="@string/technique_standard"
+        android:textAllCaps="true"
+        android:gravity="center"
+        android:textColor="@color/text_hint"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnToggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/btnMode"
+        app:layout_constraintVertical_bias="0.5" />
+
     <Button
         android:id="@+id/btnToggle"
         android:layout_width="0dp"
         android:layout_height="64dp"
-        android:layout_marginBottom="48dp"
         android:backgroundTint="@color/white"
         android:text="@string/btn_start"
         android:textColor="@color/sage_bg"
@@ -91,7 +89,8 @@
         app:cornerRadius="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintStart_toEndOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/tvTechnique"
+        app:layout_constraintWidth_percent="0.4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

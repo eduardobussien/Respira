@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Respira</string>
+    <string name="mode_desc">Switch Breathing Mode</string>
+
+    <string name="default_instruction">Inhale</string>
+
+    <string name="technique_standard">4-7-8 Relax</string>
+    <string name="technique_box">Box Focus</string>
+
+    <string name="phase_inhale">Inhale</string>
+    <string name="phase_hold">Hold</string>
+    <string name="phase_exhale">Exhale</string>
+    <string name="phase_done">Done</string>
+    <string name="default_timer">00s</string>
+
+    <string name="btn_start">Begin Session</string>
+    <string name="btn_stop">Stop Session</string>
 </resources>
