@@ -61,7 +61,6 @@ class TimerViewModel : ViewModel() {
     }
 
     // Session Logic
-
     private fun startSession() {
         _isRunning.value = true
         cyclesCompleted = 0
@@ -87,9 +86,8 @@ class TimerViewModel : ViewModel() {
         _techniqueName.value = R.string.technique_standard
     }
 
-    // PATTERN 1: 4-7-8 (Relax)
+    // 4-7-8
     // Inhale (4) -> Hold (7) -> Exhale (8)
-
     private fun start478Inhale() {
         runPhase(4000L, R.string.phase_inhale, true) { start478Hold() }
     }
@@ -112,9 +110,8 @@ class TimerViewModel : ViewModel() {
         }.start()
     }
 
-    // PATTERN 2: Box Breathing (Focus)
+    // Box Breathing
     // Inhale (4) -> Hold (4) -> Exhale (4) -> Hold (4)
-
     private fun startBoxInhale() {
         runPhase(4000L, R.string.phase_inhale, true) { startBoxHoldFull() }
     }
