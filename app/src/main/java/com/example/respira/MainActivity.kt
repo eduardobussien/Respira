@@ -1,66 +1,28 @@
 package com.example.respira
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.respira.databinding.ActivityMainBinding
+import com.example.respira.databinding.ActivityDashboardBinding
 
 class MainActivity : AppCompatActivity() {
 
-    // Enable ViewBinding
-    private lateinit var binding: ActivityMainBinding
-
-    // Connect ViewModel
-    private val viewModel: TimerViewModel by viewModels()
+    private lateinit var binding: ActivityDashboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Setup ViewBinding
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Timer
-        viewModel.timeLeft.observe(this) { timeText ->
-            binding.tvTimer.text = timeText
+        binding.btnQuickStart.setOnClickListener {
+            val intent = Intent(this, SessionActivity::class.java)
+            startActivity(intent)
         }
 
-        // Instructions
-        viewModel.instruction.observe(this) { resId ->
-            binding.tvInstruction.setText(resId)
-        }
-
-        // Technique Name
-        viewModel.techniqueName.observe(this) { resId ->
-            binding.tvTechnique.setText(resId)
-        }
-
-        // Progress Circle
-        viewModel.progress.observe(this) { value ->
-            binding.progressBar.progress = value
-        }
-
-        // Button State
-        viewModel.isRunning.observe(this) { running ->
-            if (running) {
-                binding.btnToggle.text = getString(R.string.btn_stop)
-                binding.btnToggle.setTextColor(getColor(R.color.sage_bg))
-                binding.btnToggle.background.setTint(getColor(R.color.white))
-            } else {
-                binding.btnToggle.text = getString(R.string.btn_start)
-                binding.btnToggle.setTextColor(getColor(R.color.sage_bg))
-                binding.btnToggle.background.setTint(getColor(R.color.white))
-            }
-        }
-
-        // CLICKS (User Actions)
-
-        binding.btnToggle.setOnClickListener {
-            viewModel.toggleTimer()
-        }
-
-        binding.btnMode.setOnClickListener {
-            viewModel.switchMode()
+        binding.btnLibrary.setOnClickListener {
+            val intent = Intent(this, LibraryActivity::class.java)
+            startActivity(intent)
         }
     }
 }
