@@ -35,16 +35,20 @@ class AddTechniqueFragment : DialogFragment() {
                 val holdStr = etHold.text.toString()
                 val exhaleStr = etExhale.text.toString()
 
-                if (title.isNotEmpty() && inhaleStr.isNotEmpty() && holdStr.isNotEmpty() && exhaleStr.isNotEmpty()) {
+                val inhale = inhaleStr.toIntOrNull()
+                val hold = holdStr.toIntOrNull()
+                val exhale = exhaleStr.toIntOrNull()
+
+                if (title.isNotEmpty() && inhale != null && hold != null && exhale != null) {
 
                     val savedId = techniqueToEdit?.id ?: 0
 
                     val newTechnique = BreathingTechnique(
                         id = savedId,
                         title = title,
-                        inhale = inhaleStr.toInt(),
-                        hold = holdStr.toInt(),
-                        exhale = exhaleStr.toInt()
+                        inhale = inhale,
+                        hold = hold,
+                        exhale = exhale
                     )
 
                     val database = TechniqueDatabase.getDatabase(requireContext())

@@ -1,6 +1,7 @@
 package com.example.respira
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,6 +44,7 @@ class LibraryActivity : AppCompatActivity() {
         lifecycleScope.launch {
             database.techniqueDao().getAllTechniques().collect { techniquesList ->
                 adapter.submitList(techniquesList)
+                binding.tvEmptyState.visibility = if (techniquesList.isEmpty()) View.VISIBLE else View.GONE
             }
         }
 

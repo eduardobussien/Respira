@@ -31,7 +31,8 @@
 
 * **Custom Technique Library (CRUD):** Users can Create, Read, Update, and Delete personalized breathing rhythms. Data is saved locally using a Room Database and updates the UI instantly via Kotlin `Flow`.
 * **State-Aware Timer Engine:** The countdown logic utilizes `LiveData` and ViewModels to preserve state across configuration changes (like screen rotations) without resetting the user's session.
-* **Dual Default Modes:** Includes standard anxiety reduction (4-7-8 Relax) and concentration (Box Focus) techniques out of the box.
+* **3 Built-In Breathing Modes:** Ships with Relax (4-7-8), Calm (5-5-5), and Energize (6-0-2) techniques out of the box, plus any custom rhythms saved to the library.
+* **Configurable Session Length:** Users can set session cycles (1, 3, or 5 rounds) via the Settings menu, persisted across app launches with SharedPreferences.
 * **Responsive Design:** Optimized layouts for both Portrait (Stacked) and Landscape (Split-Screen) utilizing advanced constrained scaling and chaining.
 
 ---
@@ -59,4 +60,4 @@ To run this project locally:
 
 ## 👨‍💻 Author
 
-**Eduardo Bussien** 
+**Eduardo Bussien**

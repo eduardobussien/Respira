@@ -4,6 +4,8 @@ import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.util.Locale
+import kotlin.math.ceil
 
 class TimerViewModel : ViewModel() {
 
@@ -24,7 +26,11 @@ class TimerViewModel : ViewModel() {
 
     private var timer: CountDownTimer? = null
     private var cyclesCompleted = 0
-    private val TOTAL_CYCLES = 3
+    private var totalCycles = 3
+
+    fun setCycles(n: Int) {
+        if (_isRunning.value != true) totalCycles = n
+    }
 
     private var currentInhale = 4000L
     private var currentHold = 7000L
@@ -41,7 +47,7 @@ class TimerViewModel : ViewModel() {
         currentHold = hold * 1000L
         currentExhale = exhale * 1000L
 
-        _timeLeft.value = String.format("%02ds", inhale)
+        _timeLeft.value = String.format(Locale.ROOT, "%02ds", inhale)
     }
 
     fun toggleTimer() {
@@ -63,7 +69,7 @@ class TimerViewModel : ViewModel() {
         _isRunning.value = false
         _instruction.value = R.string.phase_inhale
         _progress.value = 0
-        _timeLeft.value = String.format("%02ds", currentInhale / 1000)
+        _timeLeft.value = String.format(Locale.ROOT, "%02ds", currentInhale / 1000)
     }
 
     private fun startDynamicInhale() {
@@ -94,7 +100,7 @@ class TimerViewModel : ViewModel() {
 
     private fun checkLoops(onContinue: () -> Unit) {
         cyclesCompleted++
-        if (cyclesCompleted < TOTAL_CYCLES) {
+        if (cyclesCompleted < totalCycles) {
             onContinue()
         } else {
             stopSession()
@@ -118,7 +124,7 @@ class TimerViewModel : ViewModel() {
     }
 
     private fun updateTimerText(millis: Long) {
-        val seconds = (millis / 1000) + 1
-        _timeLeft.value = String.format("%02ds", seconds)
+        val seconds = ceil(millis / 1000.0).toLong()
+        _timeLeft.value = String.format(Locale.ROOT, "%02ds", seconds)
     }
 }

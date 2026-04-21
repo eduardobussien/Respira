@@ -74,7 +74,7 @@ class SessionActivity : AppCompatActivity() {
             if (running) {
                 binding.btnToggle.text = getString(R.string.btn_stop)
                 binding.btnToggle.setTextColor(getColor(R.color.sage_bg))
-                binding.btnToggle.background.setTint(getColor(R.color.white))
+                binding.btnToggle.background.setTint(getColor(R.color.btn_stop_bg))
             } else {
                 binding.btnToggle.text = getString(R.string.btn_start)
                 binding.btnToggle.setTextColor(getColor(R.color.sage_bg))
@@ -85,5 +85,12 @@ class SessionActivity : AppCompatActivity() {
         binding.btnToggle.setOnClickListener {
             viewModel.toggleTimer()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val prefs = getSharedPreferences("prefs_respira", MODE_PRIVATE)
+        val cycles = prefs.getInt("pref_cycles", 3)
+        viewModel.setCycles(cycles)
     }
 }
