@@ -22,11 +22,23 @@ class LibraryActivity : AppCompatActivity() {
             finish()
         }
 
-        adapter = TechniqueAdapter()
+        val database = TechniqueDatabase.getDatabase(this)
+
+        adapter = TechniqueAdapter(
+            onEditClick = { technique ->
+                val editDialog = AddTechniqueFragment()
+                editDialog.techniqueToEdit = technique
+                editDialog.show(supportFragmentManager, "EditTechniqueFragment")
+            },
+            onDeleteClick = { technique ->
+                lifecycleScope.launch {
+                    database.techniqueDao().delete(technique)
+                }
+            }
+        )
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
-
-        val database = TechniqueDatabase.getDatabase(this)
 
         lifecycleScope.launch {
             database.techniqueDao().getAllTechniques().collect { techniquesList ->
@@ -35,38 +47,8 @@ class LibraryActivity : AppCompatActivity() {
         }
 
         binding.fabAdd.setOnClickListener {
-            val dialogView = layoutInflater.inflate(R.layout.dialog_add_technique, null)
-            val etTitle = dialogView.findViewById<android.widget.EditText>(R.id.etTitle)
-            val etInhale = dialogView.findViewById<android.widget.EditText>(R.id.etInhale)
-            val etHold = dialogView.findViewById<android.widget.EditText>(R.id.etHold)
-            val etExhale = dialogView.findViewById<android.widget.EditText>(R.id.etExhale)
-
-            com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
-                .setView(dialogView)
-                .setPositiveButton("Save") { dialog, _ ->
-                    val title = etTitle.text.toString()
-                    val inhaleStr = etInhale.text.toString()
-                    val holdStr = etHold.text.toString()
-                    val exhaleStr = etExhale.text.toString()
-
-                    if (title.isNotEmpty() && inhaleStr.isNotEmpty() && holdStr.isNotEmpty() && exhaleStr.isNotEmpty()) {
-                        val newTechnique = BreathingTechnique(
-                            title = title,
-                            inhale = inhaleStr.toInt(),
-                            hold = holdStr.toInt(),
-                            exhale = exhaleStr.toInt()
-                        )
-
-                        lifecycleScope.launch {
-                            database.techniqueDao().insert(newTechnique)
-                        }
-                    }
-                    dialog.dismiss()
-                }
-                .setNegativeButton("Cancel") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+            val addDialog = AddTechniqueFragment()
+            addDialog.show(supportFragmentManager, "AddTechniqueFragment")
         }
     }
 }

@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="My Techniques"
+        android:text="@string/library_title"
         android:textColor="#6B9E45"
         android:textSize="32sp"
         android:textStyle="bold"

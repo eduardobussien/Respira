@@ -24,5 +24,15 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LibraryActivity::class.java)
             startActivity(intent)
         }
+
+        binding.btnInfo.setOnClickListener {
+            val infoDialog = InfoFragment()
+            infoDialog.show(supportFragmentManager, "InfoFragment")
+        }
+
+        binding.btnSettings.setOnClickListener {
+            val settingsDialog = SettingsFragment()
+            settingsDialog.show(supportFragmentManager, "SettingsFragment")
+        }
     }
 }
