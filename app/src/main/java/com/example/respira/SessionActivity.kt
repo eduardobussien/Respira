@@ -16,7 +16,7 @@ class SessionActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         binding.btnBack.setOnClickListener {
             finish()
         }
