@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 
 class TimerViewModel : ViewModel() {
 
-    // LiveData
     private val _timeLeft = MutableLiveData<String>()
     val timeLeft: LiveData<String> = _timeLeft
 
@@ -20,23 +19,31 @@ class TimerViewModel : ViewModel() {
     private val _isRunning = MutableLiveData<Boolean>()
     val isRunning: LiveData<Boolean> = _isRunning
 
-    private val _techniqueName = MutableLiveData<Int>()
-    val techniqueName: LiveData<Int> = _techniqueName
+    private val _techniqueName = MutableLiveData<String>()
+    val techniqueName: LiveData<String> = _techniqueName
 
-    // Internal State
     private var timer: CountDownTimer? = null
     private var cyclesCompleted = 0
     private val TOTAL_CYCLES = 3
 
-    // Current Mode Tracker
-    private enum class Mode { STANDARD_478, BOX_4444 }
-    private var currentMode = Mode.STANDARD_478
+    private var currentInhale = 4000L
+    private var currentHold = 7000L
+    private var currentExhale = 8000L
 
     init {
-        resetSession()
+        setTechnique("Quick Session (4-7-8)", 4, 7, 8)
     }
 
-    // User Actions
+    fun setTechnique(title: String, inhale: Int, hold: Int, exhale: Int) {
+        stopSession()
+        _techniqueName.value = title
+        currentInhale = inhale * 1000L
+        currentHold = hold * 1000L
+        currentExhale = exhale * 1000L
+
+        _timeLeft.value = String.format("%02ds", inhale)
+    }
+
     fun toggleTimer() {
         if (_isRunning.value == true) {
             stopSession()
@@ -45,32 +52,10 @@ class TimerViewModel : ViewModel() {
         }
     }
 
-    fun switchMode() {
-        stopSession() // Stop if running
-
-        // Swap Modes
-        if (currentMode == Mode.STANDARD_478) {
-            currentMode = Mode.BOX_4444
-            _techniqueName.value = R.string.technique_box
-        } else {
-            currentMode = Mode.STANDARD_478
-            _techniqueName.value = R.string.technique_standard
-        }
-
-        _timeLeft.value = "04s"
-    }
-
-    // Session Logic
     private fun startSession() {
         _isRunning.value = true
         cyclesCompleted = 0
-
-        // Pick the right pattern
-        if (currentMode == Mode.STANDARD_478) {
-            start478Inhale()
-        } else {
-            startBoxInhale()
-        }
+        startDynamicInhale()
     }
 
     private fun stopSession() {
@@ -78,70 +63,35 @@ class TimerViewModel : ViewModel() {
         _isRunning.value = false
         _instruction.value = R.string.phase_inhale
         _progress.value = 0
-        _timeLeft.value = "04s"
+        _timeLeft.value = String.format("%02ds", currentInhale / 1000)
     }
 
-    private fun resetSession() {
-        stopSession()
-        _techniqueName.value = R.string.technique_standard
+    private fun startDynamicInhale() {
+        runPhase(currentInhale, R.string.phase_inhale, true) { startDynamicHold() }
     }
 
-    // 4-7-8
-    // Inhale (4) -> Hold (7) -> Exhale (8)
-    private fun start478Inhale() {
-        runPhase(4000L, R.string.phase_inhale, true) { start478Hold() }
-    }
-
-    private fun start478Hold() {
-        runPhase(7000L, R.string.phase_hold, false) { start478Exhale() }
-        _progress.value = 100
-    }
-
-    private fun start478Exhale() {
-        _instruction.value = R.string.phase_exhale
-        timer = object : CountDownTimer(8000L, 50) {
-            override fun onTick(millis: Long) {
-                updateTimerText(millis)
-                _progress.value = ((millis.toFloat() / 8000f) * 100).toInt()
-            }
-            override fun onFinish() {
-                checkLoops { start478Inhale() }
-            }
-        }.start()
-    }
-
-    // Box Breathing
-    // Inhale (4) -> Hold (4) -> Exhale (4) -> Hold (4)
-    private fun startBoxInhale() {
-        runPhase(4000L, R.string.phase_inhale, true) { startBoxHoldFull() }
-    }
-
-    private fun startBoxHoldFull() {
-        runPhase(4000L, R.string.phase_hold, false) { startBoxExhale() }
-        _progress.value = 100
-    }
-
-    private fun startBoxExhale() {
-        _instruction.value = R.string.phase_exhale
-        timer = object : CountDownTimer(4000L, 50) {
-            override fun onTick(millis: Long) {
-                updateTimerText(millis)
-                _progress.value = ((millis.toFloat() / 4000f) * 100).toInt()
-            }
-            override fun onFinish() {
-                startBoxHoldEmpty()
-            }
-        }.start()
-    }
-
-    private fun startBoxHoldEmpty() {
-        runPhase(4000L, R.string.phase_hold, false) {
-            checkLoops { startBoxInhale() }
+    private fun startDynamicHold() {
+        if (currentHold > 0) {
+            runPhase(currentHold, R.string.phase_hold, false) { startDynamicExhale() }
+            _progress.value = 100
+        } else {
+            startDynamicExhale()
         }
-        _progress.value = 0
     }
 
-    // Helpers
+    private fun startDynamicExhale() {
+        _instruction.value = R.string.phase_exhale
+        timer = object : CountDownTimer(currentExhale, 50) {
+            override fun onTick(millis: Long) {
+                updateTimerText(millis)
+                _progress.value = ((millis.toFloat() / currentExhale.toFloat()) * 100).toInt()
+            }
+            override fun onFinish() {
+                checkLoops { startDynamicInhale() }
+            }
+        }.start()
+    }
+
     private fun checkLoops(onContinue: () -> Unit) {
         cyclesCompleted++
         if (cyclesCompleted < TOTAL_CYCLES) {
